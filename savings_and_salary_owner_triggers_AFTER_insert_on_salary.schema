@@ -1,0 +1,29 @@
+CREATE TRIGGER replacement_of_current_salary_and_incremental_of_savings AFTER INSERT on salary_info BEGIN
+
+
+	INSERT INTO savings_info( 
+
+	savings_owner, 
+	savings_saved_amount, 
+	savings_month_saved,
+	savings_day_saved, 
+	savings_year_saved 
+
+	)VALUES(
+
+	new.salary_owner, 
+	(SELECT salary_left FROM  owner_info WHERE id = new.salary_owner),
+	new.salary_month_recv,
+	new.salary_date_recv,
+	new.salary_year_recv
+	);
+
+	UPDATE owner_info SET 
+	total_recvd = total_recvd + new.salary_amount,
+	salary_this_month = new.salary_amount,
+	salary_left = new.salary_amount
+
+	WHERE 
+	id = new.salary_owner;
+
+END;

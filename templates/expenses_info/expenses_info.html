@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+
+  <div class="jumbotron text-center">
+    <h1> Expenses Section:</h1>
+    
+    
+    <form action="" method="post">
+      <center>
+        <small> Where you agonize with the price: </small>
+        <p><small>₱{{render_field(form.expense_amount, cols="10", rows="12")}}</small></p>
+        <small> A Little Description on this expense: </small>
+        <p><small>{{render_field(form.expense_description)}}</small></p>
+
+        <br>
+        <small> Payment Category: </small>
+        <p><small>{{render_field(form.expense_category, cols="1", rows="1")}}</small></p>
+
+        <br>
+
+      
+      <input type="submit" value="Go!" class="btn btn-danger">
+      </center>
+    </form>
+
+    {% if session.logged_in == NULL %}
+    <p>
+      <a href="/register" class="btn btn-primary btn-lg">Register</a>
+    </p>
+    <p>
+      <a href="/login" class="btn btn-success btn-lg">Login</a>
+    </p>
+    {% endif %}
+    <p> </p>
+  </div>
+{% endblock %}

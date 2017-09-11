@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+
+      {% for things in result %}
+      <div class="well">
+      <p> 
+        Total Savings Saved: ₱{{things.savings_saved_amount}} 
+         On: {{things.savings_month_saved}}/{{things.savings_day_saved}}/{{things.savings_year_saved}}
+      </p>
+    </div>
+
+      {% endfor %}
+
+{% endblock %}

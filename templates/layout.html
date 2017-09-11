@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <title>Nagtitipid ka ba?</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='jquery.min.js') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap-theme.min.css') }}">
+<script src="{{ url_for('static', filename='ckeditor.js') }}"></script> 
+<script src="{{ url_for('static', filename='sf.js') }}"></script> 
+<script src="{{ url_for('static', filename='sample.js') }}"></script> 
+<script src="{{ url_for('static', filename='bootstrap.min.js') }}" ></script>
+<script src="{{ url_for('static', filename='jquery.min.js') }}" ></script>
+<script type="text/javascript">
+  var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script type=text/javascript>
+  $(function() {
+    $('a#calculate').bind('click', function() {
+      $.getJSON($SCRIPT_ROOT + '/_add_numbers', {
+        a: $('input[name="a"]').val(),
+        b: $('input[name="b"]').val()
+      }, function(data) {
+        $("#result").text(data.result);
+      });
+      return false;
+    });
+  });
+
+
+
+	$(function () {
+
+		$('a#process_input').bind('click', function() {
+
+			$.getJSON('/background_process',{
+        proglang: $('input[name="proglang"]').val(),
+        secondlang: $('input[name="secondlang"]').val(),
+      },
+
+      function(data) {
+        $("#result").text(data.result);
+        $("#sec_res").text(data.sec_res + data.result );
+      });
+      return false;
+
+      });
+		});
+
+		
+</script>
+
+
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+
+  </head>
+  <body>
+    {% include 'includes/_navbar.html' %}
+    <div class="container">
+      {% include 'includes/_messages.html' %}
+      {% block body %}{% endblock %}
+    </div>
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}" ></script>
+    {% include 'footer.html' %}
+    <!--<script src="https://cdn.ckeditor.com/4.7.2/standard/ckeditor.js"></script>-->
+
+  </body>
+</html>

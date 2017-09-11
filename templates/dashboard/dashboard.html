@@ -1,0 +1,105 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+
+  <div class="jumbotron text-center">
+    
+    <h1>Welcome {{ session.username.title() }}</h1>
+    <p class="lead"> Feel at home, </p>
+    {{a}}
+
+    {% if session.logged_in == NULL %}
+    <p>
+      <a href="/register" class="btn btn-primary btn-lg">Register</a>
+    </p>
+    <p>
+      <a href="/login" class="btn btn-success btn-lg">Login</a>
+    </p>
+    </div>
+    {% endif %}
+    <div class="container">
+         <center>
+        <p>
+        <a href="{{ url_for('expenses_info_url.expenses_info') }}" class="btn btn-danger btn-lg"> Expenses Info! :) </a>
+        </p>
+         </center>
+    </div>
+     <div class="container">
+         <center>
+        <p>
+        <a href="{{ url_for('getsweldo_url.get_sweldo') }}" class="btn btn-danger btn-lg">This day to sahod day! :)) </a>
+        </p>
+         </center>
+      
+
+    </div>
+
+    <form method="POST" action="">
+      <div class="form-group">
+        
+        <small>Month: {{render_field(form.month_spent )}} -
+        {{render_field(form.end_month_spent )}}
+        </small>
+        <br>
+        <small>
+        Date: {{render_field(form.date_spent )}} -
+        {{render_field(form.end_date_spent )}}
+        {{render_field(form.year_spent )}}
+        </small>
+      </div>
+      <input class="btn btn-default sharp" type="submit" value="Submit">
+
+    </form>
+
+    <hr>
+    {% for thingss in result %}
+      <center>
+      <p> 
+        <h4>Total Salary Left: {{thingss.salary_left}}</h4>
+      </p>
+      <p> 
+      <h4> Salary This Month: {{thingss.salary_this_month}}</h4>
+      </p>
+    </center>
+    {% endfor %}
+    <hr>
+{%  if request.method == 'POST' %}
+    <center>
+    <img class="img-responsive" src="{{url_for('analytics_url.get_image', filename=filename)}}">
+    </center>
+    <h4> Total Expense For This Query: {{tutal[0]}}</h4>
+  </div>
+      <div class="scrollit">
+        <div class="row">
+          <table class="table table-striped">
+            <tr>
+              <th></th>
+              <th>Amount</th>
+              <th>Category</th>
+              <th>Desc</th>              
+              <th>Month</th>   
+              <th>Date</th>                         
+              <th>Year</th>
+            </tr>
+            {% for things in information %}
+              <tr>
+                <td>{{things.salary_left}}</td>
+                <td>{{things.expenses_amount}}</td>
+                <td>{{things.expenses_category}}</td>
+                <td>{{things.expenses_desc}}</td>
+                <td>{{things.expenses_month_spent}}</td>            
+                <td>{{things.expenses_date_spent}}</td>                
+                
+
+                <td>{{things.expenses_year_spent}}</td>
+              </tr>
+          
+              {% endfor %}
+              
+          </table>
+        </div>
+      </div>
+{% endif %}
+
+{% endblock %}

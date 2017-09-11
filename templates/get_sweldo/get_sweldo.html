@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+
+  <div class="jumbotron text-center">
+    <h1>Salary Day Section!</h1>
+    <p class="lead"> Rollin High today m8'?</p>
+    <small>Enter the amount of salary you recieved:</small>
+    
+    <form action="" method="post">
+
+        <p><small>₱{{render_field(form.sahod_amount, cols="1", rows="1")}}</small></p>
+
+        <input type="submit" value="Go!" class="btn btn-danger">
+        
+    </form>
+
+    {% if session.logged_in == NULL %}
+    <p>
+      <a href="/register" class="btn btn-primary btn-lg">Register</a>
+    </p>
+    <p>
+      <a href="/login" class="btn btn-success btn-lg">Login</a>
+    </p>
+    {% endif %}
+    <p> </p>
+  </div>
+{% endblock %}

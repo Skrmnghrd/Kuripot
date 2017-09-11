@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <div class="jumbotron text-center">
+    <h1>Kuripot! :) </h1>
+    {% if session.logged_in == NULL %}
+      <a href="/register" class="btn btn-success sharp btn-lg">Register</a>
+      <a href="/login" class="btn btn-success sharp btn-lg">Login</a>
+    {% endif %}
+    <p><small> We system admins monitor the server's processes always. but the question is, who's gonna monitor our process (on spending our salary?) </small> </p>
+  </div>
+{% endblock %}
