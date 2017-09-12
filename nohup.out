@@ -1,0 +1,20 @@
+[2017-09-11 23:24:05 +0800] [26576] [INFO] Starting gunicorn 19.7.1
+[2017-09-11 23:24:05 +0800] [26576] [INFO] Listening at: http://127.0.0.1:8000 (26576)
+[2017-09-11 23:24:05 +0800] [26576] [INFO] Using worker: sync
+[2017-09-11 23:24:05 +0800] [26581] [INFO] Booting worker with pid: 26581
+[2017-09-11 23:24:29 +0800] [27387] [INFO] Starting gunicorn 19.7.1
+[2017-09-11 23:24:29 +0800] [27387] [INFO] Listening at: http://127.0.0.1:8000 (27387)
+[2017-09-11 23:24:29 +0800] [27387] [INFO] Using worker: sync
+[2017-09-11 23:24:29 +0800] [27423] [INFO] Booting worker with pid: 27423
+[2017-09-11 23:26:21 +0800] [27387] [INFO] Handling signal: hup
+[2017-09-11 23:26:21 +0800] [27387] [INFO] Hang up: Master
+[2017-09-11 23:26:21 +0800] [26576] [INFO] Handling signal: hup
+[2017-09-11 23:26:21 +0800] [26576] [INFO] Hang up: Master
+[2017-09-11 23:26:21 +0800] [31083] [INFO] Booting worker with pid: 31083
+[2017-09-11 23:26:21 +0800] [31084] [INFO] Booting worker with pid: 31084
+[2017-09-11 23:36:41 +0800] [26576] [INFO] Handling signal: term
+[2017-09-11 23:36:41 +0800] [27387] [INFO] Handling signal: term
+[2017-09-11 23:36:41 +0800] [31084] [INFO] Worker exiting (pid: 31084)
+[2017-09-11 23:36:41 +0800] [31083] [INFO] Worker exiting (pid: 31083)
+[2017-09-11 23:36:42 +0800] [26576] [INFO] Shutting down: Master
+[2017-09-11 23:36:42 +0800] [27387] [INFO] Shutting down: Master

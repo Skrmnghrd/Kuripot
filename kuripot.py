@@ -18,6 +18,8 @@ import imghdr
 from flask_wtf.file import FileField
 import multiprocessing
 import sqlite3
+import multiprocessing
+import time
 
 #urls and enpoints
 from kuripot_dashboard import dashboard_url
@@ -47,6 +49,13 @@ cur.execute(str(query))
 rows = cur.fetchall()
 cur.close
 """
+
+def cleaner(): #why not use crontab? bobo process itu haha use crontab 
+    time.sleep(5)
+    dirPath = "static/images"
+    fileList = listdir(dirPath)
+    for fileName in fileList:
+        remove(path.join(dirPath, fileName))
 
 def is_logged_in(f):
     @wraps(f)
@@ -159,6 +168,8 @@ def logout():
 
 
 app.secret_key='thequickbrownfoxjumpedoverthelazydog'
+clean = multiprocessing.Process(target=cleaner)
+clean.start()
 if __name__ == "__main__":
     app.secret_key='thequickbrownfoxjumpedoverthelazydog'
     app.run(port=8000, host="0.0.0.0", debug=True)

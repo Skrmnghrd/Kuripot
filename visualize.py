@@ -8,7 +8,7 @@ from os import path, urandom, mkdir, listdir, remove
 import uuid
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug import secure_filename
-
+from matplotlib import style
 from flask_wtf.file import FileField
 import multiprocessing
 import sqlite3
@@ -17,6 +17,10 @@ import matplotlib.pyplot as plt
 import threading
 db_name = "kuripot.db"
 
+"""
+
+this is just for the graphs
+"""
 app = Flask(__name__)
 analytics_url = Blueprint('analytics_url', __name__, template_folder='templates/analytics')
 
@@ -45,13 +49,18 @@ class FORM_analytics(Form):
     year_spent = SelectField(' ', choices=tuple(year_choice))
 
 
+
 def process_data(colors, act, slices, vars_to_query): #this justs inserts into database
-        plt.pie(slices, labels=None, shadow=True,  colors=colors, autopct='%0.1f%%' )
+        style.use('fivethirtyeight')
+
+        fig, axes = plt.subplots()
+        plt.pie(slices, labels=None, shadow=True, autopct='%0.1f%%' )
         plt.title( 'Total Spent From/On \n Start Date here and End date' )
         plt.xlabel( str( sum( slices )) )
         plt.legend(labels=act)
         plt.tight_layout()
         pic_name = uuid.uuid4().hex + ".png"
+
         path = 'static/images/{0}'.format (pic_name)
         plt.savefig(path,transparent=True)
         
@@ -238,6 +247,10 @@ def analytics(month_spent, end_month_spent, date_spent, end_date_spent, year_spe
         #return send_from_directory( 'static/images', str(a[0]) )
 
 
+@analytics_url.route('/_get_histogram_chart/<string:filename>', methods=['GET','POST'] )
+@is_logged_in
+def get_histogram_chart():
+    pass
         #pass the varable like the one in the client database pelase work on this later 
 @analytics_url.route( '/_get_image/<string:filename>', methods=['GET', 'POST'] )
 @is_logged_in
