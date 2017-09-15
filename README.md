@@ -8,8 +8,7 @@ Future versions could include more data visualizations ( moaaar charts) [histogr
 
 Also, Future Versions can include machine learning ( KNN or DecisionTree) to give advice regarding the rate and frequency of expenses
 
-
-# On a future version I will clean up the directory :)
+Added Dir cleanup.
 
 please delete the pseudo data i inserted on the databse
 contact me @ paulogrian@gmail.com
