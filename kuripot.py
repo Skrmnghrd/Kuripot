@@ -100,6 +100,13 @@ def register():
         email = form.email.data
         password = sha256_crypt.encrypt(str(form.password.data))
 
+        scan_us = [first_name, last_name, username, email, form.password.data]
+        scan_us_result = [ scan(x) for x in  scan_us ]
+
+        if "MALICIOUS" in scan_us_result:
+            flash ('Im here to help, Please don\'t harm me ;\'( ', 'danger')
+            return redirect( url_for('register') )
+         
         cur.execute("""SELECT user_username FROM owner_info where user_username=? """, (username,))
         exist = cur.fetchone()
         if exist is None:
@@ -131,7 +138,7 @@ def login():
             """
         if scan(username)  == "MALICIOUS" or scan(password_candidate) == "MALICIOUS":
             
-                flash ('You can just register. Why try to hack me? :( ', 'success')
+                flash ('You can just register. Why try to hack me? :( ', 'danger')
                 return redirect( url_for('register') )
 
         result = cur.execute( "SELECT * FROM owner_info WHERE user_username=?", ([username]) )
@@ -151,7 +158,7 @@ def login():
                 session['salary_left'] = exist['salary_left']
 
                 cur.close()
-                flash ('You are now logged in! Thank you', 'danger')
+                flash ('You are now logged in! Thank you', 'success')
                 return redirect( url_for('dashboard_url.dashboard') )
             else:
                 error = 'Login Invalid'

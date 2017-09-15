@@ -4,11 +4,14 @@
 
 
       {% for things in result %}
+
       <div class="well">
+        <center>
       <p> 
         Total Savings Saved: ₱{{things.savings_saved_amount}} 
          On: {{things.savings_month_saved}}/{{things.savings_day_saved}}/{{things.savings_year_saved}}
       </p>
+        </center>
     </div>
 
       {% endfor %}

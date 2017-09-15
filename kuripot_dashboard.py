@@ -19,6 +19,7 @@ from flask_wtf.file import FileField
 import multiprocessing
 import sqlite3
 import re
+from scanner import scan
 
 from visualize import *
 
@@ -77,6 +78,15 @@ def dashboard():
         end_date_spent = form.end_date_spent.data
         year_spent = form.year_spent.data
         end_month_spent = form.end_month_spent.data
+
+        scan_us = [galastuhan, month_spent, date_spent, end_date_spent, year_spent, end_month_spent]
+
+        scan_us_result = [ scan(x) for x in  scan_us]
+
+        if "MALICIOUS" in scan_us_result:
+            flash ('Im here to help, Please don\'t harm me ;\'( ', 'danger')
+            return redirect( url_for('dashboard_url.dashboard') )
+            
 
         con = sqlite3.connect(db_name)
         con.row_factory = sqlite3.Row

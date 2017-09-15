@@ -59,7 +59,12 @@ def expenses_info():
 
         expense_amount  = request.form['expense_amount']
         expense_amount = re.sub( '[!@#$%^&*()_+,<>/{}:"\`~]', "", str(expense_amount) )
-        expense_amount = float(expense_amount)
+        try:
+            expense_amount = float(expense_amount)
+        except:
+            flash ("Please check for invalid characters", "danger")
+            return render_template('expenses_info.html', form=form)
+
 
         expense_category = request.form['expense_category']
 
@@ -68,9 +73,9 @@ def expenses_info():
         expense_description = re.sub( '<>\\`', "", str(expense_description) )
         expense_description = str(expense_description)
 
-        if scan(expense_amount)  == "MALICIOUS":
-            flash ("Ma sulat ka nagd lg sweldo, hackon mo pako?", "danger")
-            return render_template('expense_amount.html', form=form)
+        if scan(expense_amount)  == "MALICIOUS" or scan(expense_description) == "MALICIOUS":
+            flash ("Please dont do anything to me :'(  Im here to help. :3", "danger")
+            return render_template('expenses_info.html', form=form)
         else:
 
             con = sqlite3.connect(db_name)

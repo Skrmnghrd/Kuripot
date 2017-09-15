@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-banned_characters = ['%','<','"','\'','--+', '--', '=','<script>','</script']
+banned_characters = ['%', '<', '"', '\'', '--+', '--', '=', '<script>', '</script', ';', '0x']
 
 def scan(word_to_scan):
     for things in banned_characters:

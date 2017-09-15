@@ -15,6 +15,7 @@ import sqlite3
 import uuid
 import matplotlib.pyplot as plt
 import threading
+
 db_name = "kuripot.db"
 
 """
@@ -49,15 +50,40 @@ class FORM_analytics(Form):
     year_spent = SelectField(' ', choices=tuple(year_choice))
 
 
+def get_sum(list_of_act, month_spent, end_month_spent, date_spent, end_date_spent, year_spent): #get some ahhaha
+    return_this_dict = {}
+    db_name = "kuripot.db"
 
-def process_data(colors, act, slices, vars_to_query): #this justs inserts into database
+    for keyss in list_of_act:
+
+        con = sqlite3.connect(db_name)
+        con.row_factory = sqlite3.Row
+        cur = con.cursor()
+        cur.execute(""" 
+        SELECT SUM(expenses_amount) 
+        FROM expenses_info WHERE expenses_category = ? 
+        AND expenses_info_owner= ? AND 
+        expenses_month_spent >= ? AND
+        expenses_month_spent <= ? AND
+        expenses_date_spent >= ? AND
+        expenses_date_spent <= ? AND
+        expenses_year_spent = ?
+        """, (keyss, session['u_id'], month_spent, end_month_spent, date_spent, end_date_spent, year_spent,) )
+
+        result = cur.fetchall()
+        cur.close()
+        return_this_dict.update({str(keyss) : float(result[0][0]) })
+        
+    return return_this_dict
+
+def process_data(act, slices): #this justs inserts into database
         style.use('fivethirtyeight')
 
-        fig, axes = plt.subplots()
-        plt.pie(slices, labels=None, shadow=True, autopct='%0.1f%%' )
+        #fig, axes = plt.subplots()
+        plt.pie(slices, labels=None, shadow=True, autopct='%0.1f%%')
         plt.title( 'Total Spent From/On \n Start Date here and End date' )
         plt.xlabel( str( sum( slices )) )
-        plt.legend(labels=act)
+        plt.legend(labels=act) #sala ni. indi dapat alphabetical. dapat sorted by pinakamahal
         plt.tight_layout()
         pic_name = uuid.uuid4().hex + ".png"
 
@@ -77,13 +103,6 @@ def process_data(colors, act, slices, vars_to_query): #this justs inserts into d
 def analytics(month_spent, end_month_spent, date_spent, end_date_spent, year_spent):
     form = FORM_analytics(request.form)
     if request.method == 'POST':
-        """
-        month_spent = form.month_spent.data
-        end_month_spent = form.end_date_spent.data
-        date_spent = form.date_spent.data
-        end_date_spent = form.end_date_spent.data
-        year_spent = form.year_spent.data
-        """
         db_name = "kuripot.db"
         """
         to add all contents of a list in python
@@ -113,124 +132,31 @@ def analytics(month_spent, end_month_spent, date_spent, end_date_spent, year_spe
 
         for things in result:
             act.append( (things[0]) )
-
-        con = sqlite3.connect(db_name)
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        vars_to_query = []
-
-        for things in act:
-            vars_to_query.append(things)
-            vars_to_query.append(session['u_id'])
-            vars_to_query.append(month_spent) 
-            vars_to_query.append(end_month_spent)
-            vars_to_query.append(date_spent)
-            vars_to_query.append(end_date_spent)
-            vars_to_query.append(year_spent)
-        
-        #for i in range(64):
-        while len(vars_to_query) <= 62:
-            vars_to_query.append(None)
-
-        
-
-        """
-        nakadumdom kana sang dynamic nga solusyon ni kagina. wala mo pa gin sulat sa papel ahhahah gago ka ahha;
-
-        umm anyways. create a function for this
-        tapos append to a list. sa bilog nga length sa ng query. 
-        """
-        cur.execute("""SELECT SUM(expenses_amount) 
-        FROM expenses_info WHERE expenses_category = ? AND expenses_info_owner=? AND 
-        expenses_month_spent >= ? AND
-        expenses_month_spent <= ? AND
-        expenses_date_spent >= ? AND
-        expenses_date_spent <= ? AND
-        expenses_year_spent = ?
-        UNION 
-        SELECT SUM(expenses_amount) 
-        FROM expenses_info WHERE expenses_category=? AND expenses_info_owner=? AND 
-        expenses_month_spent >= ? AND
-        expenses_month_spent <= ? AND
-        expenses_date_spent >= ? AND
-        expenses_date_spent <= ? AND
-        expenses_year_spent = ?
-        UNION 
-        SELECT SUM(expenses_amount) 
-        FROM expenses_info WHERE expenses_category=? AND expenses_info_owner=? AND 
-        expenses_month_spent >= ? AND
-        expenses_month_spent <= ? AND
-        expenses_date_spent >= ? AND
-        expenses_date_spent <= ? AND
-        expenses_year_spent = ?
-        UNION 
-        SELECT SUM(expenses_amount) 
-        FROM expenses_info WHERE expenses_category=? AND expenses_info_owner=? AND  
-        expenses_month_spent >= ? AND
-        expenses_month_spent <= ? AND
-        expenses_date_spent >= ? AND
-        expenses_date_spent <= ? AND
-        expenses_year_spent = ?
-        UNION 
-        SELECT SUM(expenses_amount) 
-        FROM expenses_info WHERE expenses_category=? AND expenses_info_owner=? AND 
-        expenses_month_spent >= ? AND
-        expenses_month_spent <= ? AND
-        expenses_date_spent >= ? AND
-        expenses_date_spent <= ? AND
-        expenses_year_spent = ?
-        UNION 
-        SELECT SUM(expenses_amount) 
-        FROM expenses_info WHERE expenses_category=? AND expenses_info_owner=? AND 
-        expenses_month_spent >= ? AND
-        expenses_month_spent <= ? AND
-        expenses_date_spent >= ? AND
-        expenses_date_spent <= ? AND
-        expenses_year_spent = ?
-        UNION 
-        SELECT SUM(expenses_amount) 
-        FROM expenses_info WHERE expenses_category=? AND expenses_info_owner=?AND  
-        expenses_month_spent >= ? AND
-        expenses_month_spent <= ? AND
-        expenses_date_spent >= ? AND
-        expenses_date_spent <= ? AND
-        expenses_year_spent = ?
-        UNION 
-        SELECT SUM(expenses_amount) 
-        FROM expenses_info WHERE expenses_category=? AND expenses_info_owner=? AND 
-        expenses_month_spent >= ? AND
-        expenses_month_spent <= ? AND
-        expenses_date_spent >= ? AND
-        expenses_date_spent <= ? AND
-        expenses_year_spent = ?
-        UNION SELECT 
-        SUM(expenses_amount) 
-        FROM expenses_info WHERE expenses_category=? AND expenses_info_owner=? AND  
-        expenses_month_spent >= ? AND
-        expenses_month_spent <= ? AND
-        expenses_date_spent >= ? AND
-        expenses_date_spent <= ? AND
-        expenses_year_spent = ?""", (*vars_to_query,  ) ) #list here
-        result = cur.fetchall()
-        cur.close()
         """
         #LIST COMPREHENSION KUNO PARA PRO ahhaa
         L = [[None], [123], [None], [151]]
         << list_indice[0] for variable in List if variable is not None >>
         """
         #a = [ x for x[0] in reversed(result) if x[0] is not None ]
-        a = list(filter( None.__ne__, [x[0] for x in reversed(result) ] ) )
+        #a = list(filter( None.__ne__, [x[0] for x in reversed(result) ] ) )
+        
+        #slices = [*a]
 
-        slices = [*a]
+        iter_me = get_sum(act, month_spent, end_month_spent, date_spent, end_date_spent, year_spent)
+        act2 = []
+        slices = []
+        for keys, values in get_sum(act, month_spent, end_month_spent, date_spent, end_date_spent, year_spent).items():
+            act2.append(keys)
+            slices.append(values)
 
 
-        colors = ['red','orange','yellow','green','blue','violet','grey', 'white','cyan']
+
         #<value_when_condition_true> if <condition> else <value_when_condition_false> for value in list_name]
         #pleae design le fuken pie chart
 
         #colors act slices vars_to_query
         #q = multiprocessing.Queue()
-        p = multiprocessing.Process( target=process_data, args=(colors, act, slices, vars_to_query,) )
+        p = multiprocessing.Process( target=process_data, args=(act2, slices) )
 
         p.start()
         p.join()
@@ -257,3 +183,47 @@ def get_histogram_chart():
 def get_image(filename):
     return send_from_directory('static/images/', filename)
     #return filename
+
+"""
+
+select DISTINCT 
+        expenses_category
+        FROM
+        expenses_info WHERE
+        expenses_info_owner= 3 AND 
+        expenses_month_spent >= 9 AND
+        expenses_month_spent <= 9 AND
+        expenses_date_spent >= 13 AND
+        expenses_date_spent <= 13 AND
+        expenses_year_spent = 2017
+        ORDER BY sum(expenses_amount)
+
+
+select sum(expenses_amount), expenses_category from expenses_info where expenses_category = (select DISTINCT expenses_category FROM expenses_info WHERE expenses_info_owner= 3 AND 
+        expenses_month_spent >= 9 AND
+        expenses_month_spent <= 9 AND
+        expenses_date_spent >= 13 AND
+        expenses_date_spent <= 13 AND
+        expenses_year_spent = 2017
+        ORDER BY expenses_category
+)
+UNION SELECT 
+sum(expenses_amount), expenses_category from expenses_info where expenses_category = (select DISTINCT expenses_category FROM expenses_info WHERE expenses_info_owner= 3 AND 
+        expenses_month_spent >= 9 AND
+        expenses_month_spent <= 9 AND
+        expenses_date_spent >= 13 AND
+        expenses_date_spent <= 13 AND
+        expenses_year_spent = 2017
+        ORDER BY expenses_category
+);
+
+Bills		| sum(Bills)
+Others		| sum(Others)
+Transport	| sum(Transport)
+
+
+300.0|Bills
+please|populate
+other|tings
+here| if ok
+"""
