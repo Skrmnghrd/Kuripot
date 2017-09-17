@@ -19,10 +19,15 @@ from flask_wtf.file import FileField
 import multiprocessing
 import sqlite3
 import re
-from scanner import scan
+import datetime
 
+from scanner import scan
 from visualize import *
 
+
+
+
+now = datetime.datetime.now()
 app = Flask(__name__)
 dashboard_url = Blueprint('dashboard_url', __name__, template_folder='templates/dashboard')
 db_name = 'kuripot.db'
@@ -45,13 +50,13 @@ class FORM_dashboard(Form):
     month_choice = [ (y, y) for y in range(1,13) ]
     year_choice = [ (y, y) for y in range(2017,2030) ]
 
-    month_spent = SelectField(' ', choices=tuple(month_choice) )
-    end_month_spent = SelectField(' ', choices=tuple(month_choice) )
-    date_spent = SelectField(' ', choices=tuple(date_choice) )
+    month_spent = SelectField(' ', choices=tuple(month_choice), default=(now.month) )
+    end_month_spent = SelectField(' ', choices=tuple(month_choice),  default=(now.month) )
+    date_spent = SelectField(' ', choices=tuple(date_choice), default=(now.day) )
 
-    end_date_spent =SelectField(' ', choices=tuple(date_choice) )
+    end_date_spent =SelectField(' ', choices=tuple(date_choice), default=(now.day) )
 
-    year_spent = SelectField(' ', choices=tuple(year_choice))
+    year_spent = SelectField(' ', choices=tuple(year_choice), default=(now.year))
 
 @dashboard_url.route( '/test_daw', methods=['GET', 'POST'] )
 def test(awdawdawdawd):
